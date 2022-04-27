@@ -44,7 +44,7 @@ info:
   description: ''
   version: '1.0'
 servers:
-  - url: 'https://rfqapiservicey27itmeb4cf7q.azure-api.net/evaluation'
+  - url: 'https://demoapiservicey27itmeb4cf7q.azure-api.net/evaluation'
 paths:
   /hello:
     get:
