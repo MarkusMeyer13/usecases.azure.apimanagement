@@ -12,7 +12,7 @@ param skuCount int = 1
 
 param location string = resourceGroup().location
 
-var logAnalyticsWorkspaceName = 'log-rfq'
+var logAnalyticsWorkspaceName = 'log-demo'
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
   name: logAnalyticsWorkspaceName
@@ -56,7 +56,7 @@ resource logAnalyticsWorkspaceDiagnostics 'Microsoft.Insights/diagnosticSettings
   }
 }
 
-var appInsightsName = 'appi-rfq'
+var appInsightsName = 'appi-demo'
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: appInsightsName
   location: location
@@ -69,7 +69,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-var apiManagementServiceName = 'demorfqapiservice${uniqueString(resourceGroup().id)}'
+var apiManagementServiceName = 'demoapiservice${uniqueString(resourceGroup().id)}'
 
 resource apiManagementService 'Microsoft.ApiManagement/service@2021-08-01' = {
   name: apiManagementServiceName
