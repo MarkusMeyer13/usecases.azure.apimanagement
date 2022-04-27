@@ -1,0 +1,19 @@
+{
+    "data": {
+        "domain": "tinyurl.com",
+        "alias": "2s3xj48u",
+        "deleted": false,
+        "archived": false,
+        "analytics": {
+            "enabled": true,
+            "public": false
+        },
+        "tags": [],
+        "created_at": "2022-04-25T09:38:15.000000Z",
+        "expires_at": null,
+        "tiny_url": "https://tinyurl.com/2s3xj48u",
+        "url": "https://www.planb.net"
+    },
+    "code": 0,
+    "errors": []
+}
