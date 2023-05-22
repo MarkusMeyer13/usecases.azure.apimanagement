@@ -71,7 +71,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
 
 var apiManagementServiceName = 'demoapiservice${uniqueString(resourceGroup().id)}'
 
-resource apiManagementService 'Microsoft.ApiManagement/service@2021-08-01' = {
+resource apiManagementService 'Microsoft.ApiManagement/service@2022-09-01-preview' = {
   name: apiManagementServiceName
   location: location
   sku: {
@@ -85,7 +85,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2021-08-01' = {
   }
 }
 
-resource apiManagementServiceLogger 'Microsoft.ApiManagement/service/loggers@2021-08-01' = {
+resource apiManagementServiceLogger 'Microsoft.ApiManagement/service/loggers@2022-09-01-preview' = {
   name: '${apiManagementService.name}/${appInsights.name}'
   properties: {
     loggerType: 'applicationInsights'
@@ -95,7 +95,7 @@ resource apiManagementServiceLogger 'Microsoft.ApiManagement/service/loggers@202
   }
 }
 
-resource namedValueAppInsightsKey 'Microsoft.ApiManagement/service/namedValues@2021-08-01' = {
+resource namedValueAppInsightsKey 'Microsoft.ApiManagement/service/namedValues@2022-09-01-preview' = {
   name: '${apiManagementService.name}/AppInsightsKey'
   properties: {
     displayName: 'AppInsightsKey'
@@ -107,7 +107,7 @@ resource namedValueAppInsightsKey 'Microsoft.ApiManagement/service/namedValues@2
   }
 }
 
-resource namedValueTinyUrlKey 'Microsoft.ApiManagement/service/namedValues@2021-08-01' = {
+resource namedValueTinyUrlKey 'Microsoft.ApiManagement/service/namedValues@2022-09-01-preview' = {
   name: '${apiManagementService.name}/TinyUrlKey'
   properties: {
     displayName: 'TinyUrlKey'
@@ -119,7 +119,7 @@ resource namedValueTinyUrlKey 'Microsoft.ApiManagement/service/namedValues@2021-
   }
 }
 
-resource namedValueEvaluationApiKey 'Microsoft.ApiManagement/service/namedValues@2021-08-01' = {
+resource namedValueEvaluationApiKey 'Microsoft.ApiManagement/service/namedValues@2022-09-01-preview' = {
   name: '${apiManagementService.name}/EvaluationApiKey'
   properties: {
     displayName: 'EvaluationApiKey'
@@ -131,7 +131,7 @@ resource namedValueEvaluationApiKey 'Microsoft.ApiManagement/service/namedValues
   }
 }
 
-resource petStoreApiExample 'Microsoft.ApiManagement/service/apis@2021-08-01' = {
+resource petStoreApiExample 'Microsoft.ApiManagement/service/apis@2022-09-01-preview' = {
   name: '${apiManagementService.name}/PetStoreSwaggerImportExample'
   properties: {
     format: 'openapi+json-link'
@@ -140,7 +140,7 @@ resource petStoreApiExample 'Microsoft.ApiManagement/service/apis@2021-08-01' = 
   }
 }
 
-resource encomDevelopersProduct 'Microsoft.ApiManagement/service/products@2021-08-01' = {
+resource encomDevelopersProduct 'Microsoft.ApiManagement/service/products@2022-09-01-preview' = {
   name: '${apiManagementService.name}/encomDevelopers'
   properties: {
     displayName: 'Encom Developers'
@@ -153,11 +153,11 @@ resource encomDevelopersProduct 'Microsoft.ApiManagement/service/products@2021-0
   }
 }
 
-resource productStarterPetStoreApiExample 'Microsoft.ApiManagement/service/products/apis@2021-08-01' = {
+resource productStarterPetStoreApiExample 'Microsoft.ApiManagement/service/products/apis@2022-09-01-preview' = {
   name: '${apiManagementService.name}/starter/${substring(petStoreApiExample.name, lastIndexOf(petStoreApiExample.name, '/') + 1 , length(petStoreApiExample.name)-lastIndexOf(petStoreApiExample.name, '/')-1) }'
 }
 
-resource appInsightsPetStoreApiExample 'Microsoft.ApiManagement/service/apis/diagnostics@2021-08-01' = {
+resource appInsightsPetStoreApiExample 'Microsoft.ApiManagement/service/apis/diagnostics@2022-09-01-preview' = {
   name: '${petStoreApiExample.name}/applicationinsights'
   properties:  {
     loggerId: apiManagementServiceLogger.id
@@ -195,7 +195,7 @@ resource appInsightsPetStoreApiExample 'Microsoft.ApiManagement/service/apis/dia
   }
 }
 
-resource apiManagementServiceGateway 'Microsoft.ApiManagement/service/gateways@2021-08-01' = {
+resource apiManagementServiceGateway 'Microsoft.ApiManagement/service/gateways@2022-09-01-preview' = {
   name: 'EvaluationGateway'
   parent: apiManagementService
   properties: {
