@@ -14,7 +14,7 @@ param location string = resourceGroup().location
 
 var logAnalyticsWorkspaceName = 'log-demo'
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: logAnalyticsWorkspaceName
   location: location
   properties: any({
@@ -28,7 +28,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03
   })
 }
 
-resource logAnalyticsWorkspaceDiagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
+resource logAnalyticsWorkspaceDiagnostics 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   scope: logAnalyticsWorkspace
   name: 'diagnosticSettings'
   properties: {
@@ -71,7 +71,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
 
 var apiManagementServiceName = 'demoapiservice${uniqueString(resourceGroup().id)}'
 
-resource apiManagementService 'Microsoft.ApiManagement/service@2021-08-01' = {
+resource apiManagementService 'Microsoft.ApiManagement/service@2022-09-01-preview' = {
   name: apiManagementServiceName
   location: location
   sku: {
@@ -85,7 +85,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2021-08-01' = {
   }
 }
 
-resource apiManagementServiceLogger 'Microsoft.ApiManagement/service/loggers@2021-08-01' = {
+resource apiManagementServiceLogger 'Microsoft.ApiManagement/service/loggers@2022-09-01-preview' = {
   name: '${apiManagementService.name}/${appInsights.name}'
   properties: {
     loggerType: 'applicationInsights'
@@ -95,8 +95,9 @@ resource apiManagementServiceLogger 'Microsoft.ApiManagement/service/loggers@202
   }
 }
 
-resource namedValueAppInsightsKey 'Microsoft.ApiManagement/service/namedValues@2021-08-01' = {
-  name: '${apiManagementService.name}/AppInsightsKey'
+resource namedValueAppInsightsKey 'Microsoft.ApiManagement/service/namedValues@2022-09-01-preview' = {
+  parent: apiManagementService
+  name: 'AppInsightsKey'
   properties: {
     displayName: 'AppInsightsKey'
     value: appInsights.properties.InstrumentationKey
@@ -107,8 +108,9 @@ resource namedValueAppInsightsKey 'Microsoft.ApiManagement/service/namedValues@2
   }
 }
 
-resource namedValueTinyUrlKey 'Microsoft.ApiManagement/service/namedValues@2021-08-01' = {
-  name: '${apiManagementService.name}/TinyUrlKey'
+resource namedValueTinyUrlKey 'Microsoft.ApiManagement/service/namedValues@2022-09-01-preview' = {
+  parent: apiManagementService
+  name: 'TinyUrlKey'
   properties: {
     displayName: 'TinyUrlKey'
     value: '-na-'
@@ -119,7 +121,7 @@ resource namedValueTinyUrlKey 'Microsoft.ApiManagement/service/namedValues@2021-
   }
 }
 
-resource namedValueEvaluationApiKey 'Microsoft.ApiManagement/service/namedValues@2021-08-01' = {
+resource namedValueEvaluationApiKey 'Microsoft.ApiManagement/service/namedValues@2022-09-01-preview' = {
   name: '${apiManagementService.name}/EvaluationApiKey'
   properties: {
     displayName: 'EvaluationApiKey'
@@ -131,8 +133,9 @@ resource namedValueEvaluationApiKey 'Microsoft.ApiManagement/service/namedValues
   }
 }
 
-resource petStoreApiExample 'Microsoft.ApiManagement/service/apis@2021-08-01' = {
-  name: '${apiManagementService.name}/PetStoreSwaggerImportExample'
+resource petStoreApiExample 'Microsoft.ApiManagement/service/apis@2022-09-01-preview' = {
+  parent: apiManagementService
+  name: 'PetStoreSwaggerImportExample'
   properties: {
     format: 'openapi+json-link'
     value: 'https://petstore3.swagger.io/api/v3/openapi.json'
@@ -140,8 +143,9 @@ resource petStoreApiExample 'Microsoft.ApiManagement/service/apis@2021-08-01' = 
   }
 }
 
-resource encomDevelopersProduct 'Microsoft.ApiManagement/service/products@2021-08-01' = {
-  name: '${apiManagementService.name}/encomDevelopers'
+resource encomDevelopersProduct 'Microsoft.ApiManagement/service/products@2022-09-01-preview' = {
+  parent: apiManagementService
+  name: 'encomDevelopers'
   properties: {
     displayName: 'Encom Developers'
     description: 'Developers from Encom'
@@ -153,12 +157,13 @@ resource encomDevelopersProduct 'Microsoft.ApiManagement/service/products@2021-0
   }
 }
 
-resource productStarterPetStoreApiExample 'Microsoft.ApiManagement/service/products/apis@2021-08-01' = {
+resource productStarterPetStoreApiExample 'Microsoft.ApiManagement/service/products/apis@2022-09-01-preview' = {
   name: '${apiManagementService.name}/starter/${substring(petStoreApiExample.name, lastIndexOf(petStoreApiExample.name, '/') + 1 , length(petStoreApiExample.name)-lastIndexOf(petStoreApiExample.name, '/')-1) }'
 }
 
-resource appInsightsPetStoreApiExample 'Microsoft.ApiManagement/service/apis/diagnostics@2021-08-01' = {
-  name: '${petStoreApiExample.name}/applicationinsights'
+resource appInsightsPetStoreApiExample 'Microsoft.ApiManagement/service/apis/diagnostics@2022-09-01-preview' = {
+  parent: petStoreApiExample
+  name: 'applicationinsights'
   properties:  {
     loggerId: apiManagementServiceLogger.id
     alwaysLog: 'allErrors'
@@ -195,7 +200,7 @@ resource appInsightsPetStoreApiExample 'Microsoft.ApiManagement/service/apis/dia
   }
 }
 
-resource apiManagementServiceGateway 'Microsoft.ApiManagement/service/gateways@2021-08-01' = {
+resource apiManagementServiceGateway 'Microsoft.ApiManagement/service/gateways@2022-09-01-preview' = {
   name: 'EvaluationGateway'
   parent: apiManagementService
   properties: {
