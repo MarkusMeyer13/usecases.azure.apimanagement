@@ -83,6 +83,9 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-09-01-previe
     publisherEmail: publisherEmail
     disableGateway: false
   }
+  identity: {
+    type: 'SystemAssigned'
+  }
 }
 
 resource apiManagementServiceLogger 'Microsoft.ApiManagement/service/loggers@2022-09-01-preview' = {
